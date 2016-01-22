@@ -17,14 +17,15 @@ namespace COMP212_Assignment01
         static bool emailChecked = false, mobileChecked = false;
         static bool isValidEmail = false, isValidMobile = false;
 
-        ManagerForm managerForm = new ManagerForm();
+        public PublishForm pubForm = new PublishForm();
 
-        private delegate void DelSendInfo(string info);
-        DelSendInfo sendInfoDel= null;
+        SendViaEmail send2Email;
+        SendViaMobile send2Mobile;
 
-        public SubscribeForm()
+        public SubscribeForm(PublishForm pubForm)
         {
             InitializeComponent();
+            this.pubForm = pubForm;
         }
 
         private void emailCheckBox_CheckedChanged(object sender, EventArgs e)
@@ -47,11 +48,11 @@ namespace COMP212_Assignment01
             if (emailChecked && mobileChecked) 
             {
                 if(isValidEmail&&isValidMobile)
-                {                   
-                    sendInfoDel = managerForm.addToEmailList;
-                    sendInfoDel(email);
-                    sendInfoDel = managerForm.addToMobileList;
-                    sendInfoDel(mobile);
+                {
+                    send2Email = new SendViaEmail(email);
+                    send2Email.Subscribe(pubForm);
+                    send2Mobile = new SendViaMobile(mobile);
+                    send2Mobile.Subscribe(pubForm);
                     message="Subscription successful!!!";
                 }
                 else
@@ -65,8 +66,8 @@ namespace COMP212_Assignment01
                 if(isValidEmail)
                 {
                     message = "Subscription successful!!!";
-                    sendInfoDel = managerForm.addToEmailList;
-                    sendInfoDel(email);
+                    send2Email = new SendViaEmail(email);
+                    send2Email.Subscribe(pubForm);
                 }
                 else
                 {
@@ -78,17 +79,13 @@ namespace COMP212_Assignment01
                 if (isValidMobile)
                 {
                     message = "Subscription successful!!!";
-                    sendInfoDel = managerForm.addToMobileList;
-                    sendInfoDel(mobile);
+                    send2Mobile = new SendViaMobile(mobile);
+                    send2Mobile.Subscribe(pubForm);
                 }
                 else
                 {
                     message="Please check your mobile number";
                 }
-            }
-            else
-            {
-                message="Please check your mobile/ email address";
             }
             MessageBox.Show(message);
         }
@@ -101,10 +98,10 @@ namespace COMP212_Assignment01
                 if (isValidEmail && isValidMobile)
                 {
                     MessageBox.Show("Unsubscription successful!!!");
-                    sendInfoDel = managerForm.removeFromEmailList;
-                    sendInfoDel(email);
-                    sendInfoDel = managerForm.removeFromMobileList;
-                    sendInfoDel(mobile);
+                    send2Email = new SendViaEmail(email);
+                    send2Email.Unsubscribe(pubForm);
+                    send2Mobile = new SendViaMobile(mobile);
+                    send2Mobile.Unsubscribe(pubForm);
                 }
                 else
                 {
@@ -116,8 +113,8 @@ namespace COMP212_Assignment01
             {
                 if (isValidEmail)
                 {
-                    sendInfoDel = managerForm.removeFromEmailList;
-                    sendInfoDel(email);
+                    send2Email = new SendViaEmail(email);
+                    send2Email.Unsubscribe(pubForm);
                 }
                 else
                 {
@@ -128,25 +125,19 @@ namespace COMP212_Assignment01
             {
                 if (isValidMobile)
                 {
-                    sendInfoDel = managerForm.removeFromMobileList;
-                    sendInfoDel(mobile);
+                    send2Mobile = new SendViaMobile(mobile);
+                    send2Mobile.Unsubscribe(pubForm);
                 }
                 else
                 {
                     MessageBox.Show("Please check your mobile number");
                 }
             }
-            else
-            {
-                MessageBox.Show("Please check your mobile/ email address");
-            }
         }
 
         private void cancelButton_Click(object sender, EventArgs e)
         {
             this.Close();
-            managerForm.Show();
-
         }
 
         private void sendEmailMobile(string subscribe)

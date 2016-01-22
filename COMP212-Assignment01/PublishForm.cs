@@ -20,19 +20,22 @@ namespace COMP212_Assignment01
         List<string> mobileList = new List<string>();
 
         //Declare Delegate
-        public delegate void PublishMessageDel(string msg);
+        public delegate void PublishMessageDel();
 
         //Declare an instance variable which is a Delegate object 
-        public PublishMessageDel publishmsg = null;
-
-        //Method used to Invoke Delegate
-        
-
+        public static event PublishMessageDel publishmsg=null;
+       
         public PublishForm()
         {
             InitializeComponent();
+            populateLists();
         }
 
+        public void populateLists()
+        {
+            this.emailList = ManagerForm.emailList;
+            this.mobileList = ManagerForm.mobileList;
+        }
         private void cancelButton_Click(object sender, EventArgs e)
         {
             this.Close();
@@ -49,6 +52,7 @@ namespace COMP212_Assignment01
             }
             else
             {
+                PublishMessage();
                 text += "The message \"" + message + "\" has been sent to following: \n";
                 text += "Email addresses: \n";
                 foreach(var email in emailList)
@@ -64,16 +68,10 @@ namespace COMP212_Assignment01
             }
         }
 
-        public void PublishMessage(string message)
+        public void PublishMessage()
         {
             //Invoke Delegate
-            publishmsg.Invoke(message);
-        }
-
-        public void getLists(List<string> emailList, List<string> mobileList)
-        {
-            this.emailList = emailList;
-            this.mobileList = mobileList;
+            publishmsg.Invoke();
         }
     }
 }

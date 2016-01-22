@@ -3,49 +3,51 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace COMP212_Assignment01
 {
     class SendViaEmail
     {
-        private String emailAddr;
+        private String email;
         PublishForm publishForm = new PublishForm();
 
         public SendViaEmail() { }
 
-        public SendViaEmail(String emailAddr)
+        public SendViaEmail(String email)
         {
-            this.emailAddr = emailAddr;
+            this.email = email;
         }
 
-        public void setEmailAddr(String emailAddr)
+        public void setEmailAddr(String email)
         {
-            this.emailAddr = emailAddr;
+            this.email = email;
         }
 
         public String getEmailAddr()
         {
-            return emailAddr;
+            return email;
         }
 
-        public void addToEmailList(string email)
+        public void addToEmailList()
         {
-           
+            ManagerForm.emailList.Add(this.email);
+            MessageBox.Show(this.email);
         }
-
-        public void removeFromEmailList(string email)
+        public void removeFromEmailList()
         {
-
+            ManagerForm.emailList.Remove(this.email);
+            MessageBox.Show(this.email);
         }
+
         public void Subscribe(PublishForm pubForm)
         {
-             //pubForm.publishmsg += sendEmail;
-            publishForm = pubForm;
+            PublishForm.publishmsg += addToEmailList;
         }
 
         public void Unsubscribe(PublishForm pubForm)
         {
-            //pubForm.publishmsg+=
+            PublishForm.publishmsg += removeFromEmailList;
         }
     }
 }

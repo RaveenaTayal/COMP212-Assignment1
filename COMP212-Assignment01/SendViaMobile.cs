@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace COMP212_Assignment01
 {
@@ -27,14 +28,25 @@ namespace COMP212_Assignment01
             return cellPhone;
         }
 
-        private void sendMessage(string msg)
+        public void addToMobileList()
         {
-            Console.WriteLine("The message " + "\"" + msg + "\" has already texted to " + cellPhone);
+            ManagerForm.mobileList.Add(this.cellPhone);
+            MessageBox.Show(this.cellPhone);
+        }
+        public void removeFromMobileList()
+        {
+            ManagerForm.emailList.Remove(this.cellPhone);
+            MessageBox.Show(this.cellPhone);
         }
 
         public void Subscribe(PublishForm pubForm)
         {
-            pubForm.publishmsg += sendMessage;
+            PublishForm.publishmsg += addToMobileList;
+        }
+
+        public void Unsubscribe(PublishForm pubForm)
+        {
+            PublishForm.publishmsg += removeFromMobileList;
         }
     }
 }
